@@ -11,9 +11,8 @@ int main(int argc, char *argv[])
     //return app.exec();
 
     QStringList paths;
-    paths.prepend(QCoreApplication::applicationDirPath() + QStringLiteral("/../../../plugins"));
-    paths.prepend(QCoreApplication::applicationDirPath() + QStringLiteral("/AtCore"));
     paths.prepend(QCoreApplication::applicationDirPath() + QStringLiteral("/plugins"));
+    paths.prepend(QCoreApplication::applicationDirPath() + QStringLiteral("/../../../plugins"));
 
     QPluginLoader pluginLoader;
     for (const auto &path : paths) {

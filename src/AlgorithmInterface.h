@@ -12,9 +12,13 @@ public:
 
     virtual QString name() const = 0;
 
+    //Input will always be minimized by the model
+    virtual void input(QList<float> inputs) = 0;
+    virtual QList<float> output() = 0;
+
 private:
     //struct AlgorithmInterfacePrivate;
     //AlgorithmInterfacePrivate *d;
 };
 
-Q_DECLARE_INTERFACE(AlgorithmInterface, "org.ibexcps.woptimizer.plugins.AlgorithmInterface")
+Q_DECLARE_INTERFACE(AlgorithmInterface, "org.ibexcps.woptimizer.plugins.Algorithm")

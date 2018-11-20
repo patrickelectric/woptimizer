@@ -11,6 +11,9 @@ public:
 
     QString name() const;
 
+    void input(QList<float> inputs) { Q_UNUSED(inputs) };
+    QList<float> output() { return {0}; };
+
 private:
     //struct AlgorithmInterfacePrivate;
     //AlgorithmInterfacePrivate *d;
