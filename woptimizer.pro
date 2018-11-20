@@ -1,20 +1,11 @@
-TARGET = woptimizer
-
 CONFIG += \
     c++14 \
     qtquickcompiler \
 
-include($$PWD/src/src.pri)
-
-CONFIG(debug, debug|release) {
-    message("Debug Build !")
-    win32 {
-        # Windows debug
-        CONFIG += console
-    }
-} else {
-    message("Release Build !")
-}
+TEMPLATE = subdirs
+SUBDIRS += \
+    $$PWD/src/plugins \
+    $$PWD/src \
 
 message("The project contains the following files:")
 message("Headers:      " $$HEADERS)
