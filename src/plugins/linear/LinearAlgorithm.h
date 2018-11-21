@@ -7,14 +7,12 @@ class LinearAlgorithm : public AlgorithmInterface
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.ibexcps.woptimizer.plugins.Algorithm")
     Q_INTERFACES(AlgorithmInterface)
-public:
 
+public:
     QString name() const;
 
     void input(QList<float> inputs) { Q_UNUSED(inputs) };
-    QList<float> output() { return {0}; };
+    QList<float> output();
 
 private:
-    //struct AlgorithmInterfacePrivate;
-    //AlgorithmInterfacePrivate *d;
 };

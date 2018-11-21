@@ -14,20 +14,29 @@ int main(int argc, char *argv[])
     paths.prepend(QCoreApplication::applicationDirPath() + QStringLiteral("/plugins"));
     paths.prepend(QCoreApplication::applicationDirPath() + QStringLiteral("/../../../plugins"));
 
-    QPluginLoader pluginLoader;
+    QPluginLoader pluginLoader1;
+    QPluginLoader pluginLoader2;
+    QList<AlgorithmInterface *> pluginsPointer;
     for (const auto &path : paths) {
         qDebug() << "Checking path: " << path;
         auto files = QDir(path).entryList(QDir::Files);
         for(auto file : files) {
             qDebug() << "Checking file: " << file;
-            pluginLoader.setFileName(QString("%1/%2").arg(path, file));
-            if (pluginLoader.load()) {
+            pluginLoader1.setFileName(QString("%1/%2").arg(path, file));
+            pluginLoader2.setFileName(QString("%1/%2").arg(path, file));
+            if (pluginLoader1.load()) {
                 qDebug() << "GOOD!";
-                qDebug() << "Name:" << qobject_cast<AlgorithmInterface *>(pluginLoader.instance())->name();
+                pluginsPointer.append(qobject_cast<AlgorithmInterface *>(pluginLoader1.instance()));
+                pluginsPointer.append(qobject_cast<AlgorithmInterface *>(pluginLoader2.instance()));
+                qDebug() << "Name:" << pluginsPointer.last()->name();
             } else {
                 qDebug() << "Failed!";
-            };
+            }
         }
+    }
+
+    for(auto* p : pluginsPointer) {
+        qDebug() << "> " << p->name() << " >< " << p->output();
     }
 
     return 0;
