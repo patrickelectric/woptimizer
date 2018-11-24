@@ -4,8 +4,8 @@ CONFIG += \
 
 TEMPLATE = subdirs
 SUBDIRS += \
-    $$PWD/src/plugins \
     $$PWD/src \
+    $$PWD/src/plugins \
 
 message("The project contains the following files:")
 message("Headers:      " $$HEADERS)
