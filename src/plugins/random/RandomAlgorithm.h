@@ -9,9 +9,11 @@ class RandomAlgorithm : public AlgorithmInterface
     Q_INTERFACES(AlgorithmInterface)
 
 public:
+    RandomAlgorithm();
+
     QString name() const;
 
-    void input(QList<float> inputs) { Q_UNUSED(inputs) };
+    void input(QList<float> inputs);
     QList<float> output();
 
 private:

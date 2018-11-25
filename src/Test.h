@@ -1,5 +1,6 @@
 #include <QtTest/QtTest>
 
+class AlgorithmInterface;
 /**
  * @brief Test class to test basic functionalities
  *
@@ -13,4 +14,12 @@ private slots:
      *
      */
     void initTestCase();
+
+    void loadPlugins();
+
+    void linearModel();
+    //void linear();
+
+private:
+    QMap<QString, AlgorithmInterface *> _pluginsPointer;
 };

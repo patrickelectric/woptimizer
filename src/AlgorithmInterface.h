@@ -16,7 +16,11 @@ public:
     virtual void input(QList<float> inputs) = 0;
     virtual QList<float> output() = 0;
 
-private:
+signals:
+    void outputChanged();
+
+protected:
+    QList<float> _output;
     //struct AlgorithmInterfacePrivate;
     //AlgorithmInterfacePrivate *d;
 };

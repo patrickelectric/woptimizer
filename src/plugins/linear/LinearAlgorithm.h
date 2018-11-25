@@ -11,8 +11,17 @@ class LinearAlgorithm : public AlgorithmInterface
 public:
     QString name() const;
 
-    void input(QList<float> inputs) { Q_UNUSED(inputs) };
+    void input(QList<float> inputs);
     QList<float> output();
 
-private:
+    // y = a*x + b
+    struct linear {
+        float x1 = 0.0;
+        float x2 = 0.0;
+        float y1 = 0.0;
+        float y2 = 0.0;
+        float a = 0.0;
+        float b = 0.0;
+    };
+    QList<linear> _lines;
 };
