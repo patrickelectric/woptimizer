@@ -38,9 +38,13 @@ void Test::loadPlugins()
 
 void Test::linearModel()
 {
-    QStringList pluginsName {
-        //"Random",
-        "Linear",
+    struct LinearTest {
+        QString name;
+        float minError;
+    };
+    QList<LinearTest> testStruct {
+        {"Random", std::numeric_limits<float>::max()},
+        {"Linear", std::numeric_limits<float>::epsilon()},
     };
 
     auto model = [](float input) -> float {
@@ -49,10 +53,12 @@ void Test::linearModel()
 
     const float minError = 0.05;
 
-    for(const auto& pluginName : pluginsName) {
+    for(const auto& test : testStruct) {
+        QString pluginName = test.name;
+        float minError = test.minError;
+
         QVERIFY2(_pluginsPointer.contains(pluginName), "Cant find plugin");
         connect(_pluginsPointer[pluginName], &AlgorithmInterface::outputChanged, this, [this, pluginName, model, minError] {
-            qDebug() << pluginName;
             float output = _pluginsPointer[pluginName]->output().first();
             float error = model(output);
             qDebug() << QString("[%1] error: %2").arg(pluginName).arg(error);
@@ -63,22 +69,5 @@ void Test::linearModel()
         _pluginsPointer[pluginName]->input({0.5});
     }
 }
-/*
-void Test::linear()
-{
-    QString pluginName = "Linear";
-    QVERIFY2(_pluginsPointer.contains(pluginName), "Cant find plugin");
-    connect(_pluginsPointer[pluginName], &AlgorithmInterface::outputChanged, this, [this, &pluginName] {
-        float output = _pluginsPointer[pluginName]->output().first();
-        float error = output - 0.5;
-        if(std::abs(error) < 0.1) {
-            qDebug() << "Done";
-        } else {
-            qDebug() << "Waiting 0.5, got:" << output;
-            _pluginsPointer[pluginName]->input({error});
-        }
-    });
-    _pluginsPointer[pluginName]->input({0.5});
-}*/
 
 QTEST_MAIN(Test)
