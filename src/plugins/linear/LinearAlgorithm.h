@@ -20,8 +20,6 @@ public:
         float x2 = 0.0;
         float y1 = 0.0;
         float y2 = 0.0;
-        float a = 0.0;
-        float b = 0.0;
     };
     QList<linear> _lines;
 };

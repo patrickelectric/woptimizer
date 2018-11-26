@@ -20,21 +20,28 @@ void LinearAlgorithm::input(QList<float> inputs)
         _lines.reserve(inputSize);
         _output.reserve(inputSize);
         for(int i = 0; i < inputSize; i++) {
-            _lines.append({0, 1, 0, 1, 0, 0});
+            _lines.append({0, 1, 0, 1});
             _output.append(0);
         }
     }
 
     for(int i = 0; i < inputSize; i++) {
-        /*
-        _lines[i].a = (_lines[i].y1 - _lines[i].y2)/(_lines[i].x1 - _lines[i].x2);
-        _lines[i].b = ((_lines[i].y1 + _lines[i].y2) - _lines[i].a*(_lines[i].x1 + _lines[i].x2))/2;
-        _output[i] = -_lines[i].b/_lines[i].a;
-        qDebug() << _lines[i].x1 << _lines[i].x2 << _lines[i].y1 << _lines[i].y2 << _output[i];
-        */
+        // This input is a result of the last output
         _lines[i].y1 = inputs[i];
+
+        /* Y is the error and it already includes the setpoint
+            The object is to make error equal to 0 (Y = 0)
+
+                y = a*x + b
+                y_1 = a*x_1 + b
+                y_2 = a*x_2 + b
+                a = \frac{y_1 - y_2}{x_1 - x_2}
+                b = \frac{y_1 + y_2 - a*(x_1 + x_2))}{2}
+                x = \frac{-b}{a} \mid y = 0
+                x = \frac{x_2*y_1 - x_1*y_2}{y_1 - y_2} \mid y = 0
+        */
         _output[i] = (_lines[i].x2*_lines[i].y1 - _lines[i].x1*_lines[i].y2)/(_lines[i].y1 - _lines[i].y2);
-        //qDebug() << _lines[i].x1 << _lines[i].x2 << _lines[i].y1 << _lines[i].y2;
+
         if(!std::isnormal(_output[i])) {
             _output[i] = 1;
             _lines[i].x2 = 0;
@@ -45,21 +52,6 @@ void LinearAlgorithm::input(QList<float> inputs)
             _lines[i].x1 = _output[i];
         }
     }
-
-    //TODO: Update this clear method to something better
-    /*
-    if(!_output.size()) {
-        _output.clear();
-        _output.reserve(inputSize);
-        for(int i = 0; i < inputSize; i++) {
-            _output.append(inputs[i]);
-        }
-    }*/
-    //_output.clear();
-    /*
-    while(inputSize-- > 0) {
-        _output.append((float)std::rand()/(float)RAND_MAX);
-    }*/
     emit outputChanged();
 };
 
