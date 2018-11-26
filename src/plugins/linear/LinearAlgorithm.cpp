@@ -34,13 +34,16 @@ void LinearAlgorithm::input(QList<float> inputs)
         */
         _lines[i].y1 = inputs[i];
         _output[i] = (_lines[i].x2*_lines[i].y1 - _lines[i].x1*_lines[i].y2)/(_lines[i].y1 - _lines[i].y2);
+        //qDebug() << _lines[i].x1 << _lines[i].x2 << _lines[i].y1 << _lines[i].y2;
         if(!std::isnormal(_output[i])) {
             _output[i] = 1;
             _lines[i].x2 = 0;
+            _lines[i].x1 = -1;
+        } else {
+            _lines[i].x2 = _lines[i].x1;
+            _lines[i].y2 = _lines[i].y1;
+            _lines[i].x1 = _output[i];
         }
-        _lines[i].x2 = _lines[i].x1;
-        _lines[i].y2 = _lines[i].y1;
-        _lines[i].x1 = _output[i];
     }
 
     //TODO: Update this clear method to something better

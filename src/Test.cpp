@@ -43,8 +43,10 @@ void Test::linearModel()
         float minError;
     };
     QList<LinearTest> testStruct {
+        // Do not expect it to be correct
         {"Random", std::numeric_limits<float>::max()},
-        {"Linear", std::numeric_limits<float>::epsilon()},
+        // epsilon * 10 is out default error for any good algorithm
+        {"Linear", std::numeric_limits<float>::epsilon()*10},
     };
 
     auto model = [](float input) -> float {
@@ -59,14 +61,31 @@ void Test::linearModel()
 
         QVERIFY2(_pluginsPointer.contains(pluginName), "Cant find plugin");
         connect(_pluginsPointer[pluginName], &AlgorithmInterface::outputChanged, this, [this, pluginName, model, minError] {
-            float output = _pluginsPointer[pluginName]->output().first();
-            float error = model(output);
-            qDebug() << QString("[%1] error: %2").arg(pluginName).arg(error);
-            if(std::abs(error) > minError) {
-                _pluginsPointer[pluginName]->input({error});
+            auto outputs = _pluginsPointer[pluginName]->output();
+            QList<float> errors;
+            errors.reserve(outputs.size());
+            bool good = true;
+
+            for(const auto output : outputs) {
+                errors.append(model(output));
+                if(std::abs(errors.last()) > minError) {
+                    good = false;
+                }
+            }
+            if(!good) {
+                _pluginsPointer[pluginName]->input(errors);
+            } else {
+                qDebug() << QString("[%1] error:").arg(pluginName) << errors;
             }
         });
-        _pluginsPointer[pluginName]->input({0.5});
+
+        QList<float> input;
+        std::srand(std::time(nullptr));
+        for(int total = 100; total --> 0;) {
+            input.append(std::rand()/(float)RAND_MAX);
+        }
+        qDebug() << QString("[%1] INPUT:").arg(pluginName) << input;
+        _pluginsPointer[pluginName]->input(input);
     }
 }
 
