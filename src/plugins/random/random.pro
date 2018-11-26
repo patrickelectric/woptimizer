@@ -1,6 +1,6 @@
 TEMPLATE = lib
-CONFIG += plugin
-#CONFIG += shared
+CONFIG += plugin \
+    c++14 \
 
 INCLUDEPATH += \
     $$PWD \
